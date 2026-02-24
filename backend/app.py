@@ -1,17 +1,28 @@
+"""Flask API for mood-based movie recommendations.
+
+Endpoints:
+- GET /health -> simple healthcheck (used by Docker Compose)
+- POST /movies with JSON {"mood": "<free text>"} -> list of TMDB movies
+"""
+
 from flask import Flask, jsonify, request
 from dotenv import load_dotenv
-from services import get_movie_parameters, fetch_movies_from_tmdb
+
+from services import fetch_movies_from_tmdb, get_movie_parameters
 
 load_dotenv()
 
 app = Flask(__name__)
 
-@app.get('/health')
+# Simple healthcheck endpoint used by `docker-compose.yml`.
+@app.get("/health")
 def health_check():
     return jsonify({"status": "healthy"}), 200
 
-@app.post('/movies')
+# Main recommendation endpoint consumed by the Streamlit frontend.
+@app.post("/movies")
 def recommend():
+    # Expected request body: {"mood": "<user text>"}
     data = request.json
     mood = data.get('mood')
     
@@ -25,5 +36,5 @@ def recommend():
     movies = fetch_movies_from_tmdb(params)
     return jsonify({"movies": movies})
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(port=5000, debug=False)
