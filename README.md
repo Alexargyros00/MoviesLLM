@@ -30,7 +30,7 @@ You will need two of them:
 ### 2. Set up the repository
 Clone the code to your local machine:
 ```bash
-git clone https://github.com/yourusername/MovieLLM.git
+git clone https://github.com/Alexargyros00/MovieLLM.git
 cd MovieLLM
 ```
 
